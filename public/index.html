@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Alle Tokens</title>
+    <style>
+        body { background-color: #1e1e1e; color: white; font-family: monospace; }
+        pre { background-color: #333; color: #0f0; padding: 10px; }
+    </style>
+</head>
+<body>
+
+<h2>Alle gespeicherten Tokens</h2>
+<pre id="tokenList">Lade Tokens...</pre>
+
+<script>
+function loadTokens() {
+    fetch('/alltokens')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('tokenList').textContent = JSON.stringify(data, null, 2);
+    })
+    .catch(error => {
+        document.getElementById('tokenList').textContent = 'Fehler beim Laden der Tokens!';
+        console.error('Error:', error);
+    });
+}
+
+loadTokens();
+</script>
+
+</body>
+</html>
