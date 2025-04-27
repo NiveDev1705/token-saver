@@ -19,14 +19,27 @@ if (fs.existsSync('tokens.json')) {
     tokens = JSON.parse(fs.readFileSync('tokens.json'));
 }
 
+// Route zum Speichern des Tokens
 app.post('/save-token', (req, res) => {
     const { jwt, expiredAt } = req.body;
-    tokens.push(req.body);
+
+    // Füge das Token und das Ablaufdatum zum Array hinzu
+    tokens.push({ jwt, expiredAt });
+
+    // Speichere die Daten in der JSON-Datei
     fs.writeFileSync('tokens.json', JSON.stringify(tokens, null, 2));
+
     res.json({ message: 'Token gespeichert!' });
 });
 
+// Route zum Abrufen aller Tokens (filtere abgelaufene Tokens)
 app.get('/alltokens', (req, res) => {
+    const currentTime = new Date().getTime(); // aktuelle Zeit in Millisekunden
+
+    // Filtere abgelaufene Tokens
+    tokens = tokens.filter(token => token.expiredAt > currentTime);
+
+    // Sende nur nicht abgelaufene Tokens zurück
     res.json(tokens);
 });
 
