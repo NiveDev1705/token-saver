@@ -20,7 +20,7 @@
 function sendToken() {
     const tokenData = document.getElementById('tokenInput').value;
 
-    fetch('/save', {
+    fetch('/save-token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
