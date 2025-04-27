@@ -20,6 +20,7 @@ if (fs.existsSync('tokens.json')) {
 }
 
 app.post('/save-token', (req, res) => {
+    const { jwt, expiredAt } = req.body;
     tokens.push(req.body);
     fs.writeFileSync('tokens.json', JSON.stringify(tokens, null, 2));
     res.json({ message: 'Token gespeichert!' });
