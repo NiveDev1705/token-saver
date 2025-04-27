@@ -19,7 +19,7 @@ if (fs.existsSync('tokens.json')) {
     tokens = JSON.parse(fs.readFileSync('tokens.json'));
 }
 
-app.post('/save', (req, res) => {
+app.post('/save-token', (req, res) => {
     tokens.push(req.body);
     fs.writeFileSync('tokens.json', JSON.stringify(tokens, null, 2));
     res.json({ message: 'Token gespeichert!' });
