@@ -6,19 +6,44 @@
     <style>
         body { background-color: #1e1e1e; color: white; font-family: monospace; }
         pre { background-color: #333; color: #0f0; padding: 10px; }
+        .token { margin-bottom: 10px; }
+        .token span { font-weight: bold; }
     </style>
 </head>
 <body>
 
 <h2>Alle gespeicherten Tokens</h2>
-<pre id="tokenList">Lade Tokens...</pre>
+<div id="tokenList">Lade Tokens...</div>
 
 <script>
+// Funktion zum Laden und Anzeigen der Tokens
 function loadTokens() {
     fetch('/alltokens')
     .then(response => response.json())
     .then(data => {
-        document.getElementById('tokenList').textContent = JSON.stringify(data, null, 2);
+        const tokenListElement = document.getElementById('tokenList');
+        tokenListElement.innerHTML = ''; // Leere den Token-Container
+
+        data.forEach(tokenData => {
+            // Extrahiere das Token und das Ablaufdatum
+            const token = tokenData.jwt;
+            const expiredAt = tokenData.expiredAt;
+
+            // Umwandeln der Millisekunden in ein lesbares Datum
+            const expirationDate = new Date(expiredAt);
+            const formattedExpirationDate = expirationDate.toLocaleString();
+
+            // Erstelle einen neuen HTML-Block für jedes Token
+            const tokenElement = document.createElement('div');
+            tokenElement.classList.add('token');
+            
+            // Füge den Token und das Ablaufdatum hinzu
+            tokenElement.innerHTML = `
+                <span>Token:</span> ${token}<br>
+                <span>Ablaufdatum:</span> ${formattedExpirationDate}
+            `;
+            tokenListElement.appendChild(tokenElement);
+        });
     })
     .catch(error => {
         document.getElementById('tokenList').textContent = 'Fehler beim Laden der Tokens!';
@@ -26,6 +51,7 @@ function loadTokens() {
     });
 }
 
+// Tokens laden, wenn die Seite geladen wird
 loadTokens();
 </script>
 
