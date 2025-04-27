@@ -1,8 +1,14 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');  // CORS-Paket importieren
 const app = express();
 const port = 3000;
+
+// CORS konfigurieren
+app.use(cors({
+    origin: 'https://moviestarplanet2.com'  // Nur Anfragen von dieser Domain erlauben
+}));
 
 app.use(express.json());
 app.use(express.static('public'));
