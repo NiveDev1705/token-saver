@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Token speichern</title>
+    <style>
+        body { background-color: #1e1e1e; color: white; font-family: monospace; }
+        textarea { width: 100%; height: 300px; background-color: #333; color: #0f0; }
+        button { margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<h2>Token hinzufügen</h2>
+<textarea id="tokenInput" placeholder="Füge dein Token JSON hier ein..."></textarea>
+<br>
+<button onclick="sendToken()">Token speichern</button>
+
+<script>
+function sendToken() {
+    const tokenData = document.getElementById('tokenInput').value;
+
+    fetch('/save-token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: tokenData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Token erfolgreich gespeichert!');
+        console.log(data);
+    })
+    .catch(error => {
+        alert('Fehler beim Speichern des Tokens!');
+        console.error('Error:', error);
+    });
+}
+</script>
+
+</body>
+</html>
